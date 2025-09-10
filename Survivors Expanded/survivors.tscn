@@ -1,0 +1,137 @@
+[gd_scene load_steps=5 format=3 uid="uid://c3wjmhoho43yq"]
+
+[ext_resource type="Script" uid="uid://c0t665k63q1gc" path="res://survivors.gd" id="1_ing58"]
+[ext_resource type="PackedScene" uid="uid://xuxkmtc4blfe" path="res://player.tscn" id="1_rafyw"]
+[ext_resource type="PackedScene" uid="uid://t3didkcb1h8p" path="res://pine_tree.tscn" id="2_w4ohl"]
+
+[sub_resource type="Curve2D" id="Curve2D_r2rfo"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -231, -169, 0, 0, 0, 0, 2108, -174, 0, 0, 0, 0, 2111, 1273, 0, 0, 0, 0, -226, 1268, 0, 0, 0, 0, -224, 1266, 0, 0, 0, 0, -233, -172, 0, 0, 0, 0, -231, -169)
+}
+point_count = 7
+
+[node name="game" type="Node2D"]
+y_sort_enabled = true
+script = ExtResource("1_ing58")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+offset_right = 1929.0
+offset_bottom = 1077.0
+
+[node name="player" parent="." instance=ExtResource("1_rafyw")]
+position = Vector2(593, 542)
+
+[node name="Path2D" type="Path2D" parent="player"]
+position = Vector2(-593, -542)
+curve = SubResource("Curve2D_r2rfo")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="player/Path2D"]
+unique_name_in_owner = true
+position = Vector2(-231, -169)
+rotation = -0.00213766
+
+[node name="PineTree" parent="." instance=ExtResource("2_w4ohl")]
+position = Vector2(187, 878)
+
+[node name="PineTree2" parent="." instance=ExtResource("2_w4ohl")]
+position = Vector2(1408, 737)
+
+[node name="PineTree3" parent="." instance=ExtResource("2_w4ohl")]
+position = Vector2(320, 310)
+
+[node name="PineTree4" parent="." instance=ExtResource("2_w4ohl")]
+position = Vector2(1136, 226)
+
+[node name="PineTree5" parent="." instance=ExtResource("2_w4ohl")]
+position = Vector2(1224, 201)
+
+[node name="PineTree6" parent="." instance=ExtResource("2_w4ohl")]
+position = Vector2(1198, 265)
+
+[node name="PineTree7" parent="." instance=ExtResource("2_w4ohl")]
+position = Vector2(995, 951)
+
+[node name="PineTree8" parent="." instance=ExtResource("2_w4ohl")]
+position = Vector2(1794, 59)
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.3
+autostart = true
+
+[node name="gameover" type="CanvasLayer" parent="."]
+unique_name_in_owner = true
+visible = false
+
+[node name="ColorRect" type="ColorRect" parent="gameover"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.764706)
+
+[node name="Label" type="Label" parent="gameover/ColorRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -46.0
+offset_top = -11.5
+offset_right = 46.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 78
+text = "GAME OVER"
+
+[node name="pause" type="CanvasLayer" parent="."]
+unique_name_in_owner = true
+process_mode = 3
+visible = false
+
+[node name="ColorRect" type="ColorRect" parent="pause"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.764706)
+
+[node name="Label" type="Label" parent="pause/ColorRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -46.0
+offset_top = -11.5
+offset_right = 46.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 78
+text = "PAUSED"
+
+[node name="Label2" type="Label" parent="pause/ColorRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -114.5
+offset_top = 48.0
+offset_right = 114.5
+offset_bottom = 71.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "PRESS SPACE BAR TO RESUME"
+
+[connection signal="health_depleted" from="player" to="." method="_on_player_health_depleted"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
