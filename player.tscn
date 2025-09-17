@@ -68,6 +68,16 @@ offset_right = -62.0
 offset_bottom = -145.0
 text = "level up!"
 
+[node name="objcomplete" type="Label" parent="."]
+unique_name_in_owner = true
+visible = false
+modulate = Color(0, 0, 0, 1)
+offset_left = -127.0
+offset_top = -168.0
+offset_right = -62.0
+offset_bottom = -145.0
+text = "objective complete!"
+
 [node name="level_up_timer" type="Timer" parent="."]
 unique_name_in_owner = true
 process_mode = 3

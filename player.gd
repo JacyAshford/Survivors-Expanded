@@ -4,6 +4,8 @@ signal health_depleted
 signal level_changed(new_level: int)
 signal coins_changed(new_total: int)
 signal fire_rate_changed(multiplier: float)
+signal kill_milestone_reached(amount: int)
+signal upgrade_purchased
 
 var coins := 0
 const COINS_PER_SLIME := 10
@@ -12,6 +14,9 @@ var fire_rate_level: int = 0
 var health = 100.0
 var level = 0
 var slimes_killed = 0
+var total_slimes_killed: int = 0
+var _hit_10: bool = false
+var _hit_100: bool = false
 const XP = 1
 const SLIMES_NEEDED = 10
 
@@ -58,7 +63,7 @@ func apply_fire_rate_upgrade_for_tier(tier: int, cost: int) -> bool:
 
 	var multiplier := 1.0 + fire_rate_level * fire_rate_step
 	fire_rate_changed.emit(multiplier)
-	print("Fire rate upgraded: level=%d, multiplier=%.2f" % [fire_rate_level, multiplier])
+	emit_signal("upgrade_purchased")
 	return true
 
 func connect_slime(slime: Node) -> void:
@@ -70,7 +75,16 @@ func connect_slime(slime: Node) -> void:
 func _on_slime_died():
 	print("[PLAYER] slime_died received")
 	slimes_killed += 1
+	total_slimes_killed += 1
 	add_coins(COINS_PER_SLIME)
+	
+	if not _hit_10 and total_slimes_killed >= 10:
+		_hit_10 = true
+		kill_milestone_reached.emit(10)
+	if not _hit_100 and total_slimes_killed >= 100:
+		_hit_100 = true
+		kill_milestone_reached.emit(100)
+	
 	if slimes_killed >= SLIMES_NEEDED:
 		level_up()
 		slimes_killed = 0

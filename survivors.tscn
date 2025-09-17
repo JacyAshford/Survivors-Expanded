@@ -1,9 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://c3wjmhoho43yq"]
+[gd_scene load_steps=11 format=3 uid="uid://c3wjmhoho43yq"]
 
 [ext_resource type="Script" uid="uid://c0t665k63q1gc" path="res://survivors.gd" id="1_ing58"]
 [ext_resource type="PackedScene" uid="uid://xuxkmtc4blfe" path="res://player.tscn" id="1_rafyw"]
 [ext_resource type="Texture2D" uid="uid://bqrpmtfjuwwle" path="res://coin.png" id="2_r2rfo"]
 [ext_resource type="PackedScene" uid="uid://t3didkcb1h8p" path="res://pine_tree.tscn" id="2_w4ohl"]
+[ext_resource type="Texture2D" uid="uid://bugdk56skph1k" path="res://objectives.png" id="3_guqcy"]
 [ext_resource type="Script" uid="uid://um6bnhqgoacu" path="res://shop.gd" id="5_fotot"]
 [ext_resource type="Texture2D" uid="uid://bps6ut1y3uld2" path="res://shop/L10_Shop.png" id="6_guqcy"]
 [ext_resource type="Texture2D" uid="uid://b8h33gnv1m620" path="res://shop/L20_Shop.png" id="7_raiau"]
@@ -55,6 +56,51 @@ offset_right = 75.0
 offset_bottom = 84.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "0"
+
+[node name="Objectives" type="Sprite2D" parent="CanvasLayer"]
+unique_name_in_owner = true
+position = Vector2(120, 172)
+texture = ExtResource("3_guqcy")
+
+[node name="obj1" type="Label" parent="CanvasLayer"]
+unique_name_in_owner = true
+visible = false
+offset_left = 41.0
+offset_top = 137.0
+offset_right = 55.0
+offset_bottom = 160.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "X"
+
+[node name="obj2" type="Label" parent="CanvasLayer"]
+unique_name_in_owner = true
+visible = false
+offset_left = 41.0
+offset_top = 158.0
+offset_right = 55.0
+offset_bottom = 181.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "X"
+
+[node name="obj3" type="Label" parent="CanvasLayer"]
+unique_name_in_owner = true
+visible = false
+offset_left = 41.0
+offset_top = 179.0
+offset_right = 55.0
+offset_bottom = 202.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "X"
+
+[node name="obj4" type="Label" parent="CanvasLayer"]
+unique_name_in_owner = true
+visible = false
+offset_left = 41.0
+offset_top = 200.0
+offset_right = 55.0
+offset_bottom = 223.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "X"
 
 [node name="player" parent="." instance=ExtResource("1_rafyw")]
 unique_name_in_owner = true
