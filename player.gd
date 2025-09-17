@@ -3,14 +3,19 @@ extends CharacterBody2D
 signal health_depleted
 signal level_changed(new_level: int)
 signal coins_changed(new_total: int)
+signal fire_rate_changed(multiplier: float)
 
 var coins := 0
 const COINS_PER_SLIME := 10
+var purchased_upgrades := {}
+var fire_rate_level: int = 0
 var health = 100.0
 var level = 0
 var slimes_killed = 0
 const XP = 1
 const SLIMES_NEEDED = 10
+
+@export var fire_rate_step: float = 0.5
 
 @onready var levelup_label := get_node_or_null("%level_up_label")
 @onready var levelup_timer := get_node_or_null("%level_up_timer")
@@ -20,11 +25,8 @@ func _ready():
 	for slime in get_tree().get_nodes_in_group("Slimes"):
 		connect_slime(slime)
 
-	# Ensure the timer's signal is wired (in case it wasn't connected in the editor)
 	if levelup_timer and not levelup_timer.timeout.is_connected(_on_LevelUpTimer_timeout):
 		levelup_timer.timeout.connect(_on_LevelUpTimer_timeout)
-
-	# Start hidden, just in case
 	if levelup_label:
 		levelup_label.visible = false
 
@@ -33,6 +35,31 @@ func _ready():
 func add_coins(amount: int) -> void:
 	coins += amount
 	coins_changed.emit(coins)
+	
+func spend_coins(amount: int) -> bool:
+	if coins >= amount:
+		coins -= amount
+		coins_changed.emit(coins)
+		return true
+	else:
+		print("Not enough coins!")
+		return false
+		
+func apply_fire_rate_upgrade_for_tier(tier: int, cost: int) -> bool:
+	if tier in purchased_upgrades:
+		print("Upgrade for level %d already purchased." % tier)
+		return false
+
+	if not spend_coins(cost):
+		return false
+
+	purchased_upgrades[tier] = true
+	fire_rate_level += 1
+
+	var multiplier := 1.0 + fire_rate_level * fire_rate_step
+	fire_rate_changed.emit(multiplier)
+	print("Fire rate upgraded: level=%d, multiplier=%.2f" % [fire_rate_level, multiplier])
+	return true
 
 func connect_slime(slime: Node) -> void:
 	if slime and slime.has_signal("slime_died"):

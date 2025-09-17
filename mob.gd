@@ -23,7 +23,7 @@ func take_damage():
 
 	if health <= 0:
 		print("[SLIME] emitting slime_died from:", self.get_path())
-		emit_signal("slime_died")  # BEFORE freeing
+		emit_signal("slime_died")
 		var pos := global_position
 		const SMOKE_SCENE := preload("res://smoke_explosion/smoke_explosion.tscn")
 		var smoke := SMOKE_SCENE.instantiate()
