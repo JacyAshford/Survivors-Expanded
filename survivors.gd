@@ -28,6 +28,8 @@ var objectives_completed: Array[bool] = [false, false, false, false]
 @onready var spawn_timer: Timer = %Timer
 @onready var path_follow: PathFollow2D = %PathFollow2D
 @onready var shop_layer := %shop
+@onready var sfx_shop: AudioStreamPlayer2D = $sfx_shop
+@onready var sfx_gameover: AudioStreamPlayer2D = $sfx_gameover
 
 func _ready():
 	_refresh_objectives()
@@ -87,6 +89,7 @@ func _on_player_level_changed(new_level: int) -> void:
 		level_num_label.text = "Level: %d" % new_level
 	if shop_layer and (new_level == 10 or new_level == 20 or new_level == 40):
 		shop_layer.show_for_level(new_level)
+		_play_ui_sfx_from(sfx_shop, -10.0)
 	_apply_spawn_rate_for_level(new_level)
 	if new_level >= 100:
 		complete_objective(3)  # obj4
@@ -132,6 +135,25 @@ func _on_timer_timeout() -> void:
 			spawn_mob()
 	spawn_tree()
 
+# Temp audio player
+func _play_ui_sfx_from(base_player: AudioStreamPlayer2D, volume_db: float = 0.0, pitch: float = 1.0) -> void:
+	if base_player == null or base_player.stream == null:
+		return
+	_play_ui_sfx(base_player.stream, base_player.bus, volume_db, pitch)
+
+func _play_ui_sfx(stream: AudioStream, bus: String = "Master", volume_db: float = 0.0, pitch: float = 1.0) -> void:
+	var p := AudioStreamPlayer.new()
+	p.stream = stream
+	p.bus = bus
+	p.volume_db = volume_db
+	p.pitch_scale = pitch
+
+	p.process_mode = Node.PROCESS_MODE_ALWAYS
+
+	get_tree().current_scene.add_child(p)
+	p.play()
+	p.finished.connect(p.queue_free)
+
 # Pause menu
 func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("pause"):
@@ -149,4 +171,5 @@ func pauseMenu() -> void:
 # Game over
 func _on_player_health_depleted() -> void:
 	%gameover.visible = true
+	_play_ui_sfx_from(sfx_gameover, -10.0)
 	get_tree().paused = true

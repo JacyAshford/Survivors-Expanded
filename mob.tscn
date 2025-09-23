@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://dxnlso0073l7f"]
+[gd_scene load_steps=5 format=3 uid="uid://dxnlso0073l7f"]
 
 [ext_resource type="PackedScene" uid="uid://ogik4s70pgwl" path="res://characters/slime/slime.tscn" id="1_dy6sc"]
 [ext_resource type="Script" uid="uid://btrcljudyb4c3" path="res://mob.gd" id="1_nokgg"]
+[ext_resource type="AudioStream" uid="uid://cyy61pvhdqfpr" path="res://Sounds/hit.wav" id="3_ubaqv"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_nokgg"]
 radius = 50.0
@@ -17,3 +18,7 @@ unique_name_in_owner = true
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -29)
 shape = SubResource("CircleShape2D_nokgg")
+
+[node name="sfx_hurt" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_ubaqv")
+volume_db = -16.0

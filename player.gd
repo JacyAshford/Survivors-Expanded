@@ -24,6 +24,7 @@ const SLIMES_NEEDED = 10
 
 @onready var levelup_label := get_node_or_null("%level_up_label")
 @onready var levelup_timer := get_node_or_null("%level_up_timer")
+@onready var sfx_lvlup: AudioStreamPlayer2D = $sfx_lvlup
 
 func _ready():
 	add_to_group("Player")
@@ -90,6 +91,7 @@ func _on_slime_died():
 		slimes_killed = 0
 
 func level_up() -> void:
+	sfx_lvlup.play()
 	level += 1
 	print("LEVEL UP! New level:", level)
 	

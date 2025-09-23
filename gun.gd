@@ -3,6 +3,7 @@ extends Area2D
 @export var base_wait: float = 0.8
 @onready var fire_timer: Timer = %Timer 
 @onready var player := get_tree().get_first_node_in_group("Player")
+@onready var sfx_gun: AudioStreamPlayer2D = $"../sfx_gun"
 
 func _ready() -> void:
 	if fire_timer:
@@ -26,6 +27,7 @@ func _physics_process(delta: float) -> void:
 		look_at(target_enemy.global_position)
 
 func shoot() -> void:
+	sfx_gun.play()
 	const BULLET = preload("res://bullet.tscn")
 	var new_bullet = BULLET.instantiate()
 	new_bullet.global_position = %shootingpoint.global_position

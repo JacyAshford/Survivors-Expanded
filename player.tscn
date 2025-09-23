@@ -1,8 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://xuxkmtc4blfe"]
+[gd_scene load_steps=10 format=3 uid="uid://xuxkmtc4blfe"]
 
 [ext_resource type="PackedScene" uid="uid://pbmyh1qru7p" path="res://characters/happy_boo/happy_boo.tscn" id="1_4flbx"]
 [ext_resource type="Script" uid="uid://cd8loxwqycsan" path="res://player.gd" id="1_onrkg"]
 [ext_resource type="PackedScene" uid="uid://cgth67r24cm3f" path="res://gun.tscn" id="3_i3pqv"]
+[ext_resource type="AudioStream" uid="uid://bnrevjkfr7dba" path="res://Sounds/gun.wav" id="4_hqtel"]
+[ext_resource type="AudioStream" uid="uid://ducgrl117qpje" path="res://Sounds/levelup.wav" id="5_sweqy"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_onrkg"]
 radius = 28.0179
@@ -83,3 +85,11 @@ unique_name_in_owner = true
 process_mode = 3
 wait_time = 2.0
 one_shot = true
+
+[node name="sfx_gun" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_hqtel")
+volume_db = -15.848
+
+[node name="sfx_lvlup" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_sweqy")
+volume_db = -8.419
