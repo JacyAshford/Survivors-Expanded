@@ -1,27 +1,73 @@
-# Survivors-Expanded
-This is a repo for the Godot game tutorial from "Your First 2D GAME From Zero in Godot 4 **Vampire Survivor Style**" by GDScript at this link: https://www.youtube.com/watch?v=GwCiGixlqiU&t=164s
+Survivors-Expanded
 
-The tutorial took me a little over 4 hours to complete and the expansions took about 3-4 hours to complete. The final expansion is unfinished, but considering I already went way over my 6 hours alloted time to spend on this first project I decided I would leave it as is and just write about the successes and failures I met along the way. 
+This project started with the tutorial Your First 2D GAME From Zero in Godot 4 (Vampire Survivor Style) by GDScript:
+https://www.youtube.com/watch?v=GwCiGixlqiU&t=164s
 
-I made 3 expansions on the tutorial game: 
-  1. I modified the environment spawning so that the trees would spawn randomly following a similar path to the enemies. This change was necessary because without it, the developer would need to hand place each individual environmental spite. No thanks.
+I used the tutorial as a foundation, then expanded the game with new features, systems, and UI. What began as a 6-hour experiment turned into a 35-hour project where I followed the tutorial, debugged and iterated on my own, and implemented new mechanics to see how far I could push the design.
 
--This addition took about 30 minutes, I needed to rewatch the section of the tutorial that introduced enemy spawning and then modify/adapt it for the environmental sprites instead
-       
-  2. I realized that the game needed a pause state, so I added a pause screen and a signal that would toggle the pause state on/off when the player pressed the space bar
+⸻
 
--This addition took about 30-45 minutes. I thought I was on the right track by trying to emulate what we did in the tutorial to create the game over screen, but it wasn't quite right. So I researched online and ended up taking a few bits and pieces from this tutorial which finally got it working. Tutorial here: https://www.youtube.com/watch?v=JEQR4ALlwVU&t=166s
+Features Implemented
 
-  3. I wanted to allow the player to level up, so I created a level-up condition where the player would need to kill 10 slimes to gain enough XP to level up. I created a signal from the slimes script that would tell the player script when a slime had died, and I create a label that would appear when the player leveled up. Somewhere along the way the level up feature is not registering and the label is not appearing, I unfortunately ran out of time to debug this.
+Tutorial Foundation
+	•	Player movement and shooting system
+	•	Enemy AI (slimes that chase the player)
+	•	Spawning logic for enemies and the environment
+	•	Health bar and game-over screen
 
--This one definitely took up more time than I anticipated. I probably worked on it for about 2 hours before I decided that I would need further help and more time than I could allot to it at the moment. I tried multiple routes including rewatching some of the tutorial, researching online and asking chat GPT (I'll link that here: https://chatgpt.com/share/68c0fe4d-e854-8001-9805-37fac5c9c5ae), but none of the things I tried quite made sense to me and I think I ended up confusing myself more. I think what I really need is some time away from this project and then to return to it with some fresh ideas, if I continue with this game for future assignments, then this feature is definitely something that I want to get right eventually.
+Expansions I Added
+	1.	Random Environment Spawning
+Trees now spawn randomly along paths, similar to enemies. This removed the need to hand-place every tree.
+This took about 30 minutes; I adapted the enemy spawning logic for environmental sprites.
+	2.	Pause Menu
+Added a pause screen UI that toggles on and off with the space bar.
+I originally tried reusing the tutorial’s game-over logic, but that didn’t work correctly, so I combined different approaches and tutorials until it worked.
+This took about 45 minutes. Reference: https://www.youtube.com/watch?v=JEQR4ALlwVU&t=166s
+	3.	Level-Up System
+The player now levels up every 10 slime kills. I created signals between the slime script and the player script, added a Level Up label, and wired in a timer so it only appears briefly.
+Debugging this took more time than expected. I went through multiple iterations, including research and a ChatGPT session (https://chatgpt.com/share/68c0fe4d-e854-8001-9805-37fac5c9c5ae). After some back and forth, I eventually got it functional, though it wasn’t perfect at first.
+	4.	Currency System
+Each slime kill awards 10 coins. A coinUI label updates in real time.
+	5.	Shop System
+A shop UI appears at levels 10, 20, and 40.
+I used a CanvasLayer with a background and Sprite2D art, with invisible buttons overlaid on top for interaction.
+Purchases cost coins: 75 at level 10, 150 at level 20, and 300 at level 40.
+	6.	Weapon Upgrade System
+Shop upgrades increase the player’s fire rate. This is handled through signals between the Player, the Gun, and the Timer node that controls bullet firing. Each upgrade makes the weapon noticeably faster.
+	7.	Objective System
+Added an Objectives UI panel with checkmarks that toggle on when goals are reached:
+	•	Kill 10 slimes
+	•	Kill 100 slimes
+	•	Buy a weapon upgrade
+	•	Reach level 100
+	8.	Sound Effects Improvements
+Death, shop, and game-over sounds now use one-shot audio nodes that detach from the scene and play to completion, even when the game is paused or when the node that triggered the sound is freed.
 
+⸻
 
+Time Spent
+	•	Tutorial (core game): ~4 hours
+	•	Early expansions (spawning, pause, basic leveling): ~3–4 hours
+	•	Debugging level-up and signals: ~6–8 hours
+	•	Implementing shop, upgrades, objectives, and polish: ~15+ hours
+	•	Total: ~35 hours
 
-I also want to add a few more things in the future: 
--player follower/helper (good-guy version of the slimes that eats enemy slimes)
--updated UI, environment, player assets
--upgrade player weapons upon successful level up
--increase enemy difficulty upon successful level up
+⸻
 
-overall, I feel like I did as much as I could within the 6 hours timeblock. I really enjoyed following this tutorial and I think it was very helpful. I would like to check out more resources from GDScript in the future when I make some further updates to this game or create a new game. 
+Future Plans
+	•	Add a follower/helper character (a “good slime” that eats enemy slimes)
+	•	Improve UI and create custom art for the environment and player
+	•	Expand weapon upgrades beyond fire rate (damage, range, etc.)
+	•	Scale enemy difficulty more aggressively as the player levels
+	•	Add clearer “not enough coins” feedback in the shop
+	•	Add more sound and visual polish (pitch variation, feedback animations, etc.)
+
+⸻
+
+Reflection
+
+This project taught me a lot about Godot’s scene tree, signals, and UI system. I ended up spending far more time than expected, but it was worth it to get features working and learn through trial and error. I’m glad I pushed beyond the tutorial and got hands-on experience with debugging and feature design.
+
+I’ll probably continue expanding this game or apply what I’ve learned here to future projects. It was a valuable first step into building more complex systems in Godot.
+
+⸻
