@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://c3wjmhoho43yq"]
+[gd_scene load_steps=13 format=3 uid="uid://c3wjmhoho43yq"]
 
 [ext_resource type="Script" uid="uid://c0t665k63q1gc" path="res://survivors.gd" id="1_ing58"]
 [ext_resource type="PackedScene" uid="uid://xuxkmtc4blfe" path="res://player.tscn" id="1_rafyw"]
@@ -9,6 +9,8 @@
 [ext_resource type="Texture2D" uid="uid://bps6ut1y3uld2" path="res://shop/L10_Shop.png" id="6_guqcy"]
 [ext_resource type="Texture2D" uid="uid://b8h33gnv1m620" path="res://shop/L20_Shop.png" id="7_raiau"]
 [ext_resource type="Texture2D" uid="uid://bb2q0wwcvxwim" path="res://shop/L40_Shop.png" id="8_l8xsm"]
+[ext_resource type="AudioStream" uid="uid://gpe2fk31cd2e" path="res://Sounds/gameover.wav" id="10_raiau"]
+[ext_resource type="AudioStream" uid="uid://c66fcbmb5u5cc" path="res://Sounds/shop.wav" id="11_r7ugh"]
 
 [sub_resource type="Curve2D" id="Curve2D_r2rfo"]
 _data = {
@@ -283,6 +285,13 @@ offset_right = 995.0
 offset_bottom = 640.0
 focus_mode = 0
 flat = true
+
+[node name="sfx_shop" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("11_r7ugh")
+volume_db = -9.41
+
+[node name="sfx_gameover" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("10_raiau")
 
 [connection signal="health_depleted" from="player" to="." method="_on_player_health_depleted"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
