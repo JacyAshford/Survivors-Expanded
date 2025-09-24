@@ -38,5 +38,11 @@ func take_damage():
 		var smoke := SMOKE_SCENE.instantiate()
 		get_parent().add_child(smoke)
 		smoke.global_position = pos
+		
+		const IMPACT_SCENE := preload("res://impact_particles.tscn")
+		var impact := IMPACT_SCENE.instantiate()
+		get_parent().add_child(impact)
+		impact.global_position = pos
+		impact.emitting = true
 
 		queue_free()

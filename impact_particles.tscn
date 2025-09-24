@@ -1,0 +1,37 @@
+[gd_scene load_steps=4 format=3 uid="uid://d2cgby48imf65"]
+
+[ext_resource type="Script" uid="uid://cr6ploiujp5yi" path="res://impact_particles.gd" id="1_bapaj"]
+
+[sub_resource type="Curve" id="Curve_3yc3k"]
+_data = [Vector2(0.00847457, 0.993747), 0.0, 0.0, 0, 0, Vector2(0.502825, 0.981241), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Gradient" id="Gradient_bapaj"]
+offsets = PackedFloat32Array(0, 0.32, 1)
+colors = PackedColorArray(1, 0, 0, 1, 0.86275, 0.390387, 0.014212, 1, 1, 1, 1, 0)
+
+[node name="ImpactParticles" type="CPUParticles2D"]
+z_index = 100
+emitting = false
+amount = 10
+lifetime = 0.25
+one_shot = true
+explosiveness = 1.0
+fixed_fps = 60
+direction = Vector2(0, 0)
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 50.0
+initial_velocity_max = 100.0
+angular_velocity_min = 10.0
+angular_velocity_max = 30.0
+scale_amount_curve = SubResource("Curve_3yc3k")
+color = Color(0.851589, 0.0292196, 2.88785e-07, 1)
+color_ramp = SubResource("Gradient_bapaj")
+hue_variation_min = 0.1
+hue_variation_max = 1.0
+script = ExtResource("1_bapaj")
+
+[node name="CleanupTimer" type="Timer" parent="."]
+wait_time = 0.25
+one_shot = true
