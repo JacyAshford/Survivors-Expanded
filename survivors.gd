@@ -30,17 +30,27 @@ var objectives_completed: Array[bool] = [false, false, false, false]
 @onready var shop_layer := %shop
 @onready var sfx_shop: AudioStreamPlayer2D = $sfx_shop
 @onready var sfx_gameover: AudioStreamPlayer2D = $sfx_gameover
+@onready var win_layer: CanvasLayer = %win
+
 
 
 @onready var tile_l10: TileMapLayer = %base
 @onready var spawn_l10: Marker2D = %Spawn_L10
+@onready var l10_obj_layer: CanvasLayer = %L10_OBJ
+@onready var l10_obj_sprite: Sprite2D = %L10Obj
+var l10_popup_shown: bool = false
 var l10_layers: Array[TileMapLayer] = []
 var _l10_col_layer: int
 var _l10_col_mask: int
 var moved_to_l10: bool = false
+var has_won: bool = false
 
 func _ready():
 	_refresh_objectives()
+	
+	if win_layer:
+		win_layer.visible = false
+	
 	if player:
 		if player.has_signal("level_changed"):
 			player.level_changed.connect(_on_player_level_changed)
@@ -52,6 +62,8 @@ func _ready():
 			player.upgrade_purchased.connect(_on_upgrade_purchased)
 
 	l10_layers.clear()
+	if l10_obj_layer:
+		l10_obj_layer.visible = false
 	for n in get_tree().get_nodes_in_group("Level10"):
 		if n is TileMapLayer:
 			l10_layers.append(n)
@@ -72,6 +84,9 @@ func _on_kill_milestone(amount: int) -> void:
 		complete_objective(0)  # obj1
 	elif amount == 100:
 		complete_objective(1)  # obj2
+	elif amount == 1000:
+		if not has_won and player and player.level >= 10:
+			_on_player_won()
 
 func _on_upgrade_purchased() -> void:
 	complete_objective(2)      # obj3
@@ -110,6 +125,10 @@ func _on_player_level_changed(new_level: int) -> void:
 	
 	if not moved_to_l10 and new_level >= 10:
 		_switch_to_l10_area()
+		
+	if not l10_popup_shown and new_level >= 10:
+		l10_popup_shown = true
+		_show_l10_objective_popup()
 
 	_apply_spawn_rate_for_level(new_level)
 	if new_level >= 100:
@@ -129,6 +148,12 @@ func _switch_to_l10_area() -> void:
 	for s in get_tree().get_nodes_in_group("Slimes"):
 		if is_instance_valid(s):
 			s.queue_free()
+			
+func _show_l10_objective_popup() -> void:
+	if l10_obj_layer:
+		l10_obj_layer.visible = true
+		await get_tree().create_timer(3.0).timeout
+		l10_obj_layer.visible = false
 
 
 # Spawn interval
@@ -209,4 +234,17 @@ func pauseMenu() -> void:
 func _on_player_health_depleted() -> void:
 	%gameover.visible = true
 	_play_ui_sfx_from(sfx_gameover, -10.0)
+	get_tree().paused = true
+
+# Win
+func _on_player_won() -> void:
+	has_won = true
+
+	if win_layer:
+		win_layer.visible = true
+
+	for s in get_tree().get_nodes_in_group("Slimes"):
+		if is_instance_valid(s):
+			s.queue_free()
+
 	get_tree().paused = true

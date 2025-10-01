@@ -1,6 +1,6 @@
 extends Area2D
 
-@export var base_wait: float = 0.05
+@export var base_wait: float = 0.3
 @onready var fire_timer: Timer = %Timer 
 @onready var player := get_tree().get_first_node_in_group("Player")
 @onready var sfx_gun: AudioStreamPlayer2D = $"../sfx_gun"

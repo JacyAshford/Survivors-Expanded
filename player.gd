@@ -17,17 +17,18 @@ var slimes_killed = 0
 var total_slimes_killed: int = 0
 var _hit_10: bool = false
 var _hit_100: bool = false
+var _hit_1000: bool = false
 const XP = 1
 const SLIMES_NEEDED = 10
 
-@export var fire_rate_step: float = 0.5
+@export var fire_rate_step: float = 0.15
 
 @onready var levelup_label := get_node_or_null("%level_up_label")
 @onready var levelup_timer := get_node_or_null("%level_up_timer")
 @onready var sfx_lvlup: AudioStreamPlayer2D = $sfx_lvlup
 
 var l10_bonus_applied: bool = false
-@export var l10_bonus_mult: float = 5
+@export var l10_bonus_mult: float = 2
 
 func _ready():
 	add_to_group("Player")
@@ -96,6 +97,9 @@ func _on_slime_died():
 	if not _hit_100 and total_slimes_killed >= 100:
 		_hit_100 = true
 		kill_milestone_reached.emit(100)
+	if not _hit_1000 and total_slimes_killed >= 1000:
+		_hit_1000 = true
+		kill_milestone_reached.emit(1000)
 	
 	if slimes_killed >= SLIMES_NEEDED:
 		level_up()

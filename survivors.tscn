@@ -1,10 +1,11 @@
-[gd_scene load_steps=14 format=4 uid="uid://c3wjmhoho43yq"]
+[gd_scene load_steps=15 format=4 uid="uid://c3wjmhoho43yq"]
 
 [ext_resource type="Script" uid="uid://c0t665k63q1gc" path="res://survivors.gd" id="1_ing58"]
 [ext_resource type="PackedScene" uid="uid://xuxkmtc4blfe" path="res://player.tscn" id="1_rafyw"]
 [ext_resource type="Texture2D" uid="uid://bqrpmtfjuwwle" path="res://coin.png" id="2_r2rfo"]
 [ext_resource type="PackedScene" uid="uid://t3didkcb1h8p" path="res://pine_tree.tscn" id="2_w4ohl"]
 [ext_resource type="Texture2D" uid="uid://bugdk56skph1k" path="res://objectives.png" id="3_guqcy"]
+[ext_resource type="Texture2D" uid="uid://bx8nuc33lt47k" path="res://L10_OBJ.png" id="4_eeisc"]
 [ext_resource type="Script" uid="uid://um6bnhqgoacu" path="res://shop.gd" id="5_fotot"]
 [ext_resource type="Texture2D" uid="uid://bps6ut1y3uld2" path="res://shop/L10_Shop.png" id="6_guqcy"]
 [ext_resource type="Texture2D" uid="uid://b8h33gnv1m620" path="res://shop/L20_Shop.png" id="7_raiau"]
@@ -105,6 +106,15 @@ offset_bottom = 223.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "X"
 
+[node name="L10_OBJ" type="CanvasLayer" parent="."]
+unique_name_in_owner = true
+visible = false
+
+[node name="L10Obj" type="Sprite2D" parent="L10_OBJ"]
+unique_name_in_owner = true
+position = Vector2(342, 88)
+texture = ExtResource("4_eeisc")
+
 [node name="player" parent="." instance=ExtResource("1_rafyw")]
 unique_name_in_owner = true
 position = Vector2(593, 542)
@@ -174,6 +184,34 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 78
 text = "GAME OVER"
+
+[node name="win" type="CanvasLayer" parent="."]
+unique_name_in_owner = true
+visible = false
+
+[node name="ColorRect" type="ColorRect" parent="win"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.764706)
+
+[node name="Label" type="Label" parent="win/ColorRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -46.0
+offset_top = -11.5
+offset_right = 46.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 78
+text = "YOU WIN!"
 
 [node name="pause" type="CanvasLayer" parent="."]
 unique_name_in_owner = true
