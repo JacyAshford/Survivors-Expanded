@@ -12,7 +12,7 @@ const COINS_PER_SLIME := 10
 var purchased_upgrades := {}
 var fire_rate_level: int = 0
 var health = 100.0
-var level = 0
+var level = 8
 var slimes_killed = 0
 var total_slimes_killed: int = 0
 var _hit_10: bool = false
@@ -26,6 +26,9 @@ const SLIMES_NEEDED = 10
 @onready var levelup_timer := get_node_or_null("%level_up_timer")
 @onready var sfx_lvlup: AudioStreamPlayer2D = $sfx_lvlup
 
+var l10_bonus_applied: bool = false
+@export var l10_bonus_mult: float = 5
+
 func _ready():
 	add_to_group("Player")
 	for slime in get_tree().get_nodes_in_group("Slimes"):
@@ -37,6 +40,7 @@ func _ready():
 		levelup_label.visible = false
 
 	print("[PLAYER] ready; found slimes:", get_tree().get_nodes_in_group("Slimes").size())
+	level_changed.emit(level)
 
 func add_coins(amount: int) -> void:
 	coins += amount
@@ -60,12 +64,19 @@ func apply_fire_rate_upgrade_for_tier(tier: int, cost: int) -> bool:
 		return false
 
 	purchased_upgrades[tier] = true
-	fire_rate_level += 1
+	_recompute_fire_rate_and_emit()
+	fire_rate_level += 2
 
 	var multiplier := 1.0 + fire_rate_level * fire_rate_step
 	fire_rate_changed.emit(multiplier)
 	emit_signal("upgrade_purchased")
 	return true
+
+func _recompute_fire_rate_and_emit() -> void:
+	var upgrades_mult := 1.0 + fire_rate_level * fire_rate_step
+	var bonus := l10_bonus_mult if l10_bonus_applied else 1.0
+	var total := upgrades_mult * bonus
+	fire_rate_changed.emit(total)
 
 func connect_slime(slime: Node) -> void:
 	if slime and slime.has_signal("slime_died"):
@@ -94,6 +105,10 @@ func level_up() -> void:
 	sfx_lvlup.play()
 	level += 1
 	print("LEVEL UP! New level:", level)
+	
+	if not l10_bonus_applied and level >= 10:
+		l10_bonus_applied = true
+		_recompute_fire_rate_and_emit()
 	
 	if levelup_label:
 		levelup_label.visible = true

@@ -31,6 +31,14 @@ var objectives_completed: Array[bool] = [false, false, false, false]
 @onready var sfx_shop: AudioStreamPlayer2D = $sfx_shop
 @onready var sfx_gameover: AudioStreamPlayer2D = $sfx_gameover
 
+
+@onready var tile_l10: TileMapLayer = %base
+@onready var spawn_l10: Marker2D = %Spawn_L10
+var l10_layers: Array[TileMapLayer] = []
+var _l10_col_layer: int
+var _l10_col_mask: int
+var moved_to_l10: bool = false
+
 func _ready():
 	_refresh_objectives()
 	if player:
@@ -42,6 +50,15 @@ func _ready():
 			player.kill_milestone_reached.connect(_on_kill_milestone)
 		if player.has_signal("upgrade_purchased"):
 			player.upgrade_purchased.connect(_on_upgrade_purchased)
+
+	l10_layers.clear()
+	for n in get_tree().get_nodes_in_group("Level10"):
+		if n is TileMapLayer:
+			l10_layers.append(n)
+			
+	for layer in l10_layers:
+		layer.visible = false
+		layer.collision_enabled = false
 
 	if level_num_label:
 		level_num_label.text = "Level: 0"
@@ -90,9 +107,29 @@ func _on_player_level_changed(new_level: int) -> void:
 	if shop_layer and (new_level == 10 or new_level == 20 or new_level == 40):
 		shop_layer.show_for_level(new_level)
 		_play_ui_sfx_from(sfx_shop, -10.0)
+	
+	if not moved_to_l10 and new_level >= 10:
+		_switch_to_l10_area()
+
 	_apply_spawn_rate_for_level(new_level)
 	if new_level >= 100:
 		complete_objective(3)  # obj4
+
+# New level
+func _switch_to_l10_area() -> void:
+	moved_to_l10 = true
+
+	for layer in l10_layers:
+		layer.collision_enabled = true
+		layer.visible = true
+
+	if player and spawn_l10:
+		player.global_position = spawn_l10.global_position
+
+	for s in get_tree().get_nodes_in_group("Slimes"):
+		if is_instance_valid(s):
+			s.queue_free()
+
 
 # Spawn interval
 func _apply_spawn_rate_for_level(level: int) -> void:
