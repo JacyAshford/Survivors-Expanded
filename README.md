@@ -42,7 +42,8 @@ Added an Objectives UI panel with checkmarks that toggle on when goals are reach
 	•	Reach level 100
 	8.	Sound Effects Improvements
 Death, shop, and game-over sounds now use one-shot audio nodes that detach from the scene and play to completion, even when the game is paused or when the node that triggered the sound is freed.
-
+	9. New environment and level design at level 10
+	10. Win condition
 ⸻
 
 Time Spent
@@ -50,7 +51,8 @@ Time Spent
 	•	Early expansions (spawning, pause, basic leveling): ~3–4 hours
 	•	Debugging level-up and signals: ~6–8 hours
 	•	Implementing shop, upgrades, objectives, and polish: ~15+ hours
-	•	Total: ~35 hours
+	•	Level 10 design, environment, objective, win condition: ~6-8 hours
+	•	Total: ~43 hours
 
 ⸻
 
@@ -61,13 +63,3 @@ Future Plans
 	•	Scale enemy difficulty more aggressively as the player levels
 	•	Add clearer “not enough coins” feedback in the shop
 	•	Add more sound and visual polish (pitch variation, feedback animations, etc.)
-
-⸻
-
-Reflection
-
-This project taught me a lot about Godot’s scene tree, signals, and UI system. I ended up spending far more time than expected, but it was worth it to get features working and learn through trial and error. I’m glad I pushed beyond the tutorial and got hands-on experience with debugging and feature design.
-
-I’ll probably continue expanding this game or apply what I’ve learned here to future projects. It was a valuable first step into building more complex systems in Godot.
-
-⸻
