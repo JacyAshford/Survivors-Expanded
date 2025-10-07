@@ -44,6 +44,8 @@ Added an Objectives UI panel with checkmarks that toggle on when goals are reach
 Death, shop, and game-over sounds now use one-shot audio nodes that detach from the scene and play to completion, even when the game is paused or when the node that triggered the sound is freed.
 	9. New environment and level design at level 10
 	10. Win condition
+	11. Updated UI using Figma. See those images attached here in the SurvivorsUI folder or here at this link: https://www.figma.com/design/2qX3BK6OtABaGCSvqX05ht/gamedev?node-id=0-1&t=hhGW72nyqhIc1nP5-1
+	12. Added accessibility features. Users can now toggle global sounds on and off from a settings menu that is featured on the new Start page or on the pause menu.
 ⸻
 
 Time Spent
@@ -52,7 +54,11 @@ Time Spent
 	•	Debugging level-up and signals: ~6–8 hours
 	•	Implementing shop, upgrades, objectives, and polish: ~15+ hours
 	•	Level 10 design, environment, objective, win condition: ~6-8 hours
-	•	Total: ~43 hours
+**	•	UI creation in Figma: 2 hours
+	•	Accessibility feature planning: 1 hour
+	•	Toggle mute setting for accessibility integration: 2-3 hours**
+	
+Total: ~50 hours
 
 ⸻
 
