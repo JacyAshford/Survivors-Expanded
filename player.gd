@@ -40,6 +40,8 @@ func _ready():
 	if levelup_label:
 		levelup_label.visible = false
 
+	AudioManager.register(sfx_lvlup)
+
 	print("[PLAYER] ready; found slimes:", get_tree().get_nodes_in_group("Slimes").size())
 	level_changed.emit(level)
 

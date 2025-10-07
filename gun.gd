@@ -10,7 +10,9 @@ func _ready() -> void:
 		fire_timer.one_shot = false
 		if fire_timer.is_stopped():
 			fire_timer.start()
-			
+
+	AudioManager.register(sfx_gun)
+
 	_try_connect_player()
 	call_deferred("_deferred_connect")
 

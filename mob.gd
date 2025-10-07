@@ -10,6 +10,7 @@ var health = 3
 func _ready():
 	add_to_group("Slimes")
 	%Slime.play_walk()
+	AudioManager.register(sfx_hurt)
 
 func _physics_process(delta):
 	var direction = global_position.direction_to(player.global_position)
@@ -29,6 +30,7 @@ func take_damage():
 		p.bus = sfx_hurt.bus
 		p.volume_db = -16.0
 		get_tree().current_scene.add_child(p)
+		AudioManager.apply_current_to(p)
 		p.play()
 		p.finished.connect(p.queue_free)
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=4 uid="uid://c3wjmhoho43yq"]
+[gd_scene load_steps=19 format=4 uid="uid://c3wjmhoho43yq"]
 
 [ext_resource type="Script" uid="uid://c0t665k63q1gc" path="res://survivors.gd" id="1_ing58"]
 [ext_resource type="PackedScene" uid="uid://xuxkmtc4blfe" path="res://player.tscn" id="1_rafyw"]
@@ -8,11 +8,15 @@
 [ext_resource type="Texture2D" uid="uid://bx8nuc33lt47k" path="res://L10_OBJ.png" id="4_eeisc"]
 [ext_resource type="Script" uid="uid://um6bnhqgoacu" path="res://shop.gd" id="5_fotot"]
 [ext_resource type="Texture2D" uid="uid://bps6ut1y3uld2" path="res://shop/L10_Shop.png" id="6_guqcy"]
+[ext_resource type="Texture2D" uid="uid://c1qgughjks5gd" path="res://Settings_ICON.png" id="7_h2k2y"]
 [ext_resource type="Texture2D" uid="uid://b8h33gnv1m620" path="res://shop/L20_Shop.png" id="7_raiau"]
+[ext_resource type="Script" uid="uid://kv8jineye7f2" path="res://start.gd" id="7_xcxun"]
 [ext_resource type="Texture2D" uid="uid://bb2q0wwcvxwim" path="res://shop/L40_Shop.png" id="8_l8xsm"]
 [ext_resource type="AudioStream" uid="uid://gpe2fk31cd2e" path="res://Sounds/gameover.wav" id="10_raiau"]
 [ext_resource type="AudioStream" uid="uid://c66fcbmb5u5cc" path="res://Sounds/shop.wav" id="11_r7ugh"]
 [ext_resource type="TileSet" uid="uid://bfkwflveo5ps4" path="res://survivors.tres" id="12_r7ugh"]
+[ext_resource type="Texture2D" uid="uid://cjjjke74up2cu" path="res://settings.png" id="12_xcxun"]
+[ext_resource type="Script" uid="uid://coxpukta57qc" path="res://settings.gd" id="13_d1si8"]
 
 [sub_resource type="Curve2D" id="Curve2D_r2rfo"]
 _data = {
@@ -257,6 +261,78 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "PRESS SPACE BAR TO RESUME"
 
+[node name="settings_btn2" type="Button" parent="pause"]
+unique_name_in_owner = true
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -84.0
+offset_top = 26.0
+offset_right = -28.0
+offset_bottom = 82.0
+grow_horizontal = 0
+icon = ExtResource("7_h2k2y")
+metadata/_edit_use_anchors_ = true
+
+[node name="start" type="CanvasLayer" parent="."]
+unique_name_in_owner = true
+process_mode = 3
+visible = false
+script = ExtResource("7_xcxun")
+
+[node name="ColorRect" type="ColorRect" parent="start"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 9.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.764706)
+
+[node name="Label" type="Label" parent="start/ColorRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -46.0
+offset_top = -11.5
+offset_right = 46.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 78
+text = "Survivors! Expanded"
+
+[node name="Label2" type="Label" parent="start/ColorRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -114.5
+offset_top = 48.0
+offset_right = 114.5
+offset_bottom = 71.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "PRESS SPACE BAR TO BEGIN"
+
+[node name="settings_btn" type="Button" parent="start"]
+unique_name_in_owner = true
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -84.0
+offset_top = 26.0
+offset_right = -28.0
+offset_bottom = 82.0
+grow_horizontal = 0
+icon = ExtResource("7_h2k2y")
+metadata/_edit_use_anchors_ = true
+
 [node name="shop" type="CanvasLayer" parent="."]
 unique_name_in_owner = true
 process_mode = 3
@@ -324,6 +400,44 @@ offset_right = 995.0
 offset_bottom = 640.0
 focus_mode = 0
 flat = true
+
+[node name="settings" type="CanvasLayer" parent="."]
+unique_name_in_owner = true
+process_mode = 3
+visible = false
+script = ExtResource("13_d1si8")
+
+[node name="settingsBG" type="ColorRect" parent="settings"]
+offset_right = 1931.0
+offset_bottom = 1078.0
+color = Color(0, 0, 0, 0.764706)
+
+[node name="settings" type="Sprite2D" parent="settings"]
+position = Vector2(953, 542)
+scale = Vector2(2.03, 2.03)
+texture = ExtResource("12_xcxun")
+
+[node name="settingsCloseBtn" type="Button" parent="settings"]
+unique_name_in_owner = true
+offset_left = 1199.0
+offset_top = 360.0
+offset_right = 1235.0
+offset_bottom = 393.0
+theme_override_font_sizes/font_size = 16
+text = "X"
+
+[node name="MuteCheck" type="CheckBox" parent="settings"]
+unique_name_in_owner = true
+offset_left = 1168.0
+offset_top = 456.0
+offset_right = 1192.0
+offset_bottom = 480.0
+
+[node name="TutorialCheck" type="CheckBox" parent="settings"]
+offset_left = 1168.0
+offset_top = 528.0
+offset_right = 1192.0
+offset_bottom = 552.0
 
 [node name="sfx_shop" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("11_r7ugh")

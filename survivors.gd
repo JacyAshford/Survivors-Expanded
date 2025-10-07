@@ -4,13 +4,13 @@ extends Node2D
 @export var base_wait: float = 2.0
 @export var min_wait: float = 0.5
 @export var wait_decay_per_level: float = 0.15
-
 @export var base_mobs_per_tick: int = 1
 @export var extra_mob_every_n_levels: int = 3
 
 @export var max_slimes_on_map: int = 40
 
 var paused: bool = false
+var game_started: bool = false
 var _mobs_per_tick: int = 1
 
 # Objectives
@@ -31,21 +31,44 @@ var objectives_completed: Array[bool] = [false, false, false, false]
 @onready var sfx_shop: AudioStreamPlayer2D = $sfx_shop
 @onready var sfx_gameover: AudioStreamPlayer2D = $sfx_gameover
 @onready var win_layer: CanvasLayer = %win
-
-
-
+@onready var start_layer: CanvasLayer = %start
+@onready var settings_layer: CanvasLayer = %settings
 @onready var tile_l10: TileMapLayer = %base
 @onready var spawn_l10: Marker2D = %Spawn_L10
 @onready var l10_obj_layer: CanvasLayer = %L10_OBJ
 @onready var l10_obj_sprite: Sprite2D = %L10Obj
+@onready var settings_layer_script := settings_layer
+@onready var pause_layer: CanvasLayer = %pause
+@onready var pause_settings_btn: Button = %settings_btn2
+
 var l10_popup_shown: bool = false
 var l10_layers: Array[TileMapLayer] = []
 var _l10_col_layer: int
 var _l10_col_mask: int
 var moved_to_l10: bool = false
 var has_won: bool = false
+var _settings_opened_from_pause := false
 
 func _ready():
+	
+	get_tree().paused = true
+	start_layer.process_mode = Node.PROCESS_MODE_ALWAYS
+	start_layer.visible = true
+	start_layer.start_requested.connect(_start_game)
+	start_layer.settings_requested.connect(_show_settings)
+	
+	settings_layer.process_mode = Node.PROCESS_MODE_ALWAYS
+	settings_layer.visible = false
+	
+	if settings_layer.has_signal("close_requested"):
+		settings_layer.close_requested.connect(_on_settings_closed)
+	
+	if pause_settings_btn and not pause_settings_btn.pressed.is_connected(_on_pause_settings_pressed):
+		pause_settings_btn.pressed.connect(_on_pause_settings_pressed)
+	
+	if start_layer:
+		start_layer.visible = true
+	
 	_refresh_objectives()
 	
 	if win_layer:
@@ -60,6 +83,9 @@ func _ready():
 			player.kill_milestone_reached.connect(_on_kill_milestone)
 		if player.has_signal("upgrade_purchased"):
 			player.upgrade_purchased.connect(_on_upgrade_purchased)
+
+	AudioManager.register(sfx_gameover)
+	AudioManager.register(sfx_shop)
 
 	l10_layers.clear()
 	if l10_obj_layer:
@@ -78,6 +104,23 @@ func _ready():
 		coin_label.text = "Coins: 0"
 
 	_apply_spawn_rate_for_level(0)
+
+func _show_settings() -> void:
+	if settings_layer:
+		settings_layer.visible = true
+	if start_layer and start_layer.has_method("on_settings_opened"):
+		start_layer.on_settings_opened()
+
+func _on_settings_closed() -> void:
+	if settings_layer:
+		settings_layer.visible = false
+	if start_layer and start_layer.has_method("on_settings_closed"):
+		start_layer.on_settings_closed()
+	
+	if _settings_opened_from_pause:
+		_settings_opened_from_pause = false
+		if pause_layer:
+			pause_layer.visible = true
 
 func _on_kill_milestone(amount: int) -> void:
 	if amount == 10:
@@ -213,13 +256,25 @@ func _play_ui_sfx(stream: AudioStream, bus: String = "Master", volume_db: float 
 	p.process_mode = Node.PROCESS_MODE_ALWAYS
 
 	get_tree().current_scene.add_child(p)
+	AudioManager.apply_current_to(p)
 	p.play()
 	p.finished.connect(p.queue_free)
 
-# Pause menu
+# Pause menu & start
 func _process(delta: float) -> void:
-	if Input.is_action_just_pressed("pause"):
+	if not game_started and Input.is_action_just_pressed("pause"):
+		_start_game()
+		return
+	
+	if game_started and Input.is_action_just_pressed("pause"):
 		pauseMenu()
+
+func _start_game() -> void:
+	game_started = true
+	if start_layer: start_layer.visible = false
+	get_tree().paused = false
+	if spawn_timer and spawn_timer.is_stopped():
+		spawn_timer.start()
 
 func pauseMenu() -> void:
 	if paused:
@@ -229,6 +284,12 @@ func pauseMenu() -> void:
 		%pause.show()
 		Engine.time_scale = 0.0
 	paused = !paused
+
+func _on_pause_settings_pressed() -> void:
+	_settings_opened_from_pause = true
+	if pause_layer:
+		pause_layer.visible = false       
+	_show_settings()                     
 
 # Game over
 func _on_player_health_depleted() -> void:
